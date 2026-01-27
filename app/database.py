@@ -13,6 +13,7 @@ Base = declarative_base()
 
 def get_db():
     """Получение базы данных."""
+
     db = SessionLocal()
     try:
         yield db
