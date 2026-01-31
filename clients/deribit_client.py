@@ -36,14 +36,23 @@ class DeribitClient:
 
     async def get_index_price(self, index_name: str) -> IndexPrice:
         """Получение index_price для указанного индекса."""
+
         payload = {
             "jsonrpc": "2.0",
             "id": 1,
             "method": "public/get_index_price",
             "params": {"index_name": index_name}
         }
-        async with self.session.post(f"{self.base_url}/public/get_index_price", json=payload) as response:
-            data = await response.json()
+        timeout = aiohttp.ClientTimeout(total=10)  # 10s timeout
+        async with self.session.post(
+                f"{self.base_url}/public/get_index_price",
+                json=payload,
+                timeout=timeout
+        ) as resp:
+            resp.raise_for_status()
+            data = await resp.json()
+            if "error" in data:
+                raise ValueError(f"API Error: {data["error"]}")
             return IndexPrice(
                 ticker=index_name.upper(),
                 price=float(data["result"]["index_price"]),

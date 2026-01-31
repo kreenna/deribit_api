@@ -8,7 +8,7 @@ class PriceRecordSchema(BaseModel):
     price: Decimal = Field(..., decimal_places=8)
     timestamp: int = Field(..., ge=0)  # UNIX timestamp
 
-    class Config:
+    class ConfigDict:
         from_attributes = True
         json_encoders = {
             Decimal: float  # Автоконвертация Decimal -> float для JSON

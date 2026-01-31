@@ -101,12 +101,12 @@ def get_prices_by_date(
         start_date: datetime = Query(
             ...,
             description="Начальная дата (ISO 8601, UTC)",
-            example="2026-01-01T00:00:00Z"
+            examples=["2026-01-01T00:00:00Z"]
         ),
         end_date: Optional[datetime] = Query(
             None,
             description="Конечная дата (ISO 8601, UTC)",
-            example="2026-01-30T23:59:59Z"
+            examples=["2026-01-30T23:59:59Z"]
         ),
         db: Session = Depends(get_db)
 ):
@@ -130,7 +130,7 @@ def get_prices_by_date(
     # если end_date не указан, используем текущее время
     if end_date is None:
         from datetime import datetime as dt
-        end_date = dt.utcnow()
+        end_date = dt.now()
 
     records = repo.get_by_ticker_and_date(ticker_upper, start_date, end_date)
 
