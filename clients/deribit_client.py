@@ -6,21 +6,31 @@ import aiohttp
 
 @dataclass
 class IndexPrice:
+    """Индекс цены."""
+
     ticker: str
     price: float
     timestamp: int
 
 
 class DeribitClient:
+    """Клиент на Deribit."""
+
     def __init__(self, base_url: str = "https://test.deribit.com/api/v2"):
+        """Инициализация."""
+
         self.base_url = base_url
         self.session: aiohttp.ClientSession | None = None
 
     async def __aenter__(self):
+        """Открытие схемы."""
+
         self.session = aiohttp.ClientSession()
         return self
 
     async def __aexit__(self, exc_type, exc_val, exc_tb):
+        """Закрытие смены."""
+
         if self.session:
             await self.session.close()
 
